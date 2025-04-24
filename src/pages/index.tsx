@@ -3,7 +3,7 @@ import { motion, useMotionValue, useSpring, useTransform, AnimatePresence } from
 import { useState, useEffect, useRef } from 'react';
 
 export default function HomePage() {
-  const [darkMode, setDarkMode] = useState(true);
+  const [darkMode, setDarkMode] = useState(false);
   const [currentDate, setCurrentDate] = useState('');
   const [isHovering, setIsHovering] = useState(false);
   const [isClient, setIsClient] = useState(false);
