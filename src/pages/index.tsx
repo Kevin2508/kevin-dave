@@ -1,29 +1,149 @@
-import { Mail, Github, Linkedin, Sun, Moon, Home as HomeIcon, User, FolderGit2, Phone } from 'lucide-react';
-import { motion } from 'framer-motion';
-import { useState } from 'react';
+import { Mail, Github, Linkedin, Sun, Moon, Home as HomeIcon, User, FolderGit2, Phone, ArrowRight } from 'lucide-react';
+import { motion, useMotionValue, useSpring, useTransform, AnimatePresence } from 'framer-motion';
+import { useState, useEffect, useRef } from 'react';
 
 export default function HomePage() {
   const [darkMode, setDarkMode] = useState(true);
-  
-  // Color variables for better contrast
+  const [currentDate, setCurrentDate] = useState('');
+  const [isHovering, setIsHovering] = useState(false);
+  const [isClient, setIsClient] = useState(false);
+  const [activeSection, setActiveSection] = useState('home');
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  // Custom cursor position
+  const cursorX = useMotionValue(0);
+  const cursorY = useMotionValue(0);
+
+  // Smooth spring animation for cursor
+  const springConfig = { damping: 25, stiffness: 300 };
+  const cursorXSpring = useSpring(cursorX, springConfig);
+  const cursorYSpring = useSpring(cursorY, springConfig);
+
+  // Cursor size transform
+  const cursorSize = useTransform(
+    cursorXSpring,
+    isClient ? [0, window.innerWidth] : [0, 0],
+    [isHovering ? 40 : 20, isHovering ? 40 : 20]
+  );
+
+  // Cursor colors
+  const cursorColor = darkMode ? 'bg-white' : 'bg-black';
+  const cursorRingColor = darkMode ? 'border-white' : 'border-black';
+
+  // Theme colors
   const bgGradient = darkMode
-    ? "bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900"
-    : "bg-gradient-to-br from-slate-50 via-slate-100 to-slate-50";
+    ? "bg-gradient-to-br from-slate-900 via-blue-950 to-gray-900"
+    : "bg-gradient-to-br from-slate-50 via-blue-100 to-gray-50";
   const textColor = darkMode ? "text-slate-100" : "text-slate-900";
-  const secondaryTextColor = darkMode ? "text-slate-400" : "text-slate-600";
-  const cardBg = darkMode ? "bg-white/5" : "bg-white/80";
-  const cardBorder = darkMode ? "border-white/10" : "border-slate-200";
-  const skillBg = darkMode ? "bg-white/10" : "bg-slate-100";
-  const skillText = darkMode ? "text-slate-300" : "text-slate-700";
-  const hoverBg = darkMode ? "hover:bg-white/20" : "hover:bg-slate-200";
-  const navBg = darkMode ? "bg-white/5" : "bg-white/80";
-  const navBorder = darkMode ? "border-white/10" : "border-slate-200";
-  const gradientColors = darkMode ? "from-blue-500 to-purple-500" : "from-blue-600 to-purple-600";
-  const linkHover = darkMode ? "hover:text-blue-400" : "hover:text-blue-600";
-  const iconColor = darkMode ? "text-slate-300" : "text-slate-700";
+  const secondaryTextColor = darkMode ? "text-slate-300" : "text-slate-700";
+  const cardBg = darkMode ? "bg-white/10" : "bg-white/90";
+  const cardBorder = darkMode ? "border-white/20" : "border-slate-200";
+  const skillBg = darkMode ? "bg-white/15" : "bg-slate-200";
+  const skillText = darkMode ? "text-slate-200" : "text-slate-800";
+  const hoverBg = darkMode ? "hover:bg-white/30" : "hover:bg-slate-400";
+const gradientColors = darkMode
+  ? "from-cyan-300 via-blue-400 to-indigo-500"
+  : "from-cyan-700 via-blue-800 to-indigo-900"
+  const navBg = darkMode ? "bg-white/10" : "bg-white/90";
+  const navBorder = darkMode ? "border-white/20" : "border-slate-200";
+  const linkHover = darkMode ? "hover:text-cyan-300" : "hover:text-cyan-700";
+  const iconColor = darkMode ? "text-slate-200" : "text-slate-800";
+
+  // Intersection Observer for active section
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setActiveSection(entry.target.id);
+          }
+        });
+      },
+      { threshold: 0.5 }
+    );
+
+    document.querySelectorAll('section').forEach((section) => {
+      observer.observe(section);
+    });
+
+    return () => observer.disconnect();
+  }, []);
+
+  useEffect(() => {
+    setIsClient(true);
+
+    const date = new Date();
+    const options: Intl.DateTimeFormatOptions = {
+      weekday: 'long',
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric'
+    };
+    setCurrentDate(date.toLocaleDateString('en-US', options));
+
+    if (!isClient) return;
+
+    // Mouse move handler
+    const handleMouseMove = (e: MouseEvent) => {
+      cursorX.set(e.clientX);
+      cursorY.set(e.clientY);
+    };
+
+    // Add hover handlers
+    const handleMouseEnter = () => setIsHovering(true);
+    const handleMouseLeave = () => setIsHovering(false);
+
+    // Add event listeners
+    window.addEventListener('mousemove', handleMouseMove);
+    document.querySelectorAll('a, button').forEach(el => {
+      el.addEventListener('mouseenter', handleMouseEnter);
+      el.addEventListener('mouseleave', handleMouseLeave);
+    });
+
+    return () => {
+      window.removeEventListener('mousemove', handleMouseMove);
+      document.querySelectorAll('a, button').forEach(el => {
+        el.removeEventListener('mouseenter', handleMouseEnter);
+        el.removeEventListener('mouseleave', handleMouseLeave);
+      });
+    };
+  }, [isClient]);
 
   return (
-    <div className={`min-h-screen font-sans transition-colors duration-500 ${bgGradient} ${textColor}`}>
+    <div ref={containerRef}
+    className={`min-h-screen font-urbanist transition-colors duration-500 ${bgGradient} ${textColor} cursor-none overflow-hidden`}>
+      {/* Animated Background */}
+      <div className="fixed inset-0 z-0">
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(56,189,248,0.3),rgba(255,255,255,0))]"></div>
+        <div className="absolute inset-0 bg-[linear-gradient(to_right,#0ea5e9,#3b82f6,#6366f1)] opacity-20 mix-blend-multiply"></div>
+      </div>
+
+      {/* Custom Cursor */}
+      {isClient && (
+        <>
+          <motion.div
+            className={`fixed top-0 left-0 w-3 h-3 rounded-full pointer-events-none z-50 ${cursorColor}`}
+            style={{
+              x: cursorXSpring,
+              y: cursorYSpring,
+              translateX: '-50%',
+              translateY: '-50%',
+            }}
+          />
+          <motion.div
+            className={`fixed top-0 left-0 w-8 h-8 rounded-full pointer-events-none z-50 border ${cursorRingColor} border-opacity-50`}
+            style={{
+              x: cursorXSpring,
+              y: cursorYSpring,
+              width: cursorSize,
+              height: cursorSize,
+              translateX: '-50%',
+              translateY: '-50%',
+            }}
+          />
+        </>
+      )}
+
       {/* Navigation */}
       <nav className={`fixed w-full z-50 backdrop-blur-md ${navBg} border-b ${navBorder}`}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -32,27 +152,37 @@ export default function HomePage() {
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.5 }}
-              className={`text-xl font-bold bg-gradient-to-r ${gradientColors} text-transparent bg-clip-text`}
+              className={`text-sm ${secondaryTextColor}`}
             >
-              Kevin Dave
+              {currentDate}
             </motion.div>
             <div className="flex items-center gap-6">
               <div className="hidden md:flex items-center gap-6">
-                <a href="#home" className={`flex items-center gap-2 ${linkHover} transition-colors ${textColor}`}>
-                  <HomeIcon size={20} className={iconColor} /> Home
-                </a>
-                <a href="#about" className={`flex items-center gap-2 ${linkHover} transition-colors ${textColor}`}>
-                  <User size={20} className={iconColor} /> About
-                </a>
-                <a href="#projects" className={`flex items-center gap-2 ${linkHover} transition-colors ${textColor}`}>
-                  <FolderGit2 size={20} className={iconColor} /> Projects
-                </a>
-                <a href="#contact" className={`flex items-center gap-2 ${linkHover} transition-colors ${textColor}`}>
-                  <Phone size={20} className={iconColor} /> Contact
-                </a>
+                {[
+                  { name: 'home', icon: HomeIcon },
+                  { name: 'about', icon: User },
+                  { name: 'projects', icon: FolderGit2 },
+                  { name: 'contact', icon: Phone }
+                ].map(({ name, icon: Icon }) => (
+                  <a
+                    key={name}
+                    href={`#${name}`}
+                    className={`flex items-center gap-2 ${linkHover} transition-colors ${textColor} relative group`}
+                  >
+                    <Icon size={18} className={iconColor} />
+                    <span className="relative">
+                      {name.charAt(0).toUpperCase() + name.slice(1)}
+                      <span
+                        className={`absolute bottom-0 left-0 w-full h-0.5 bg-gradient-to-r ${gradientColors} ${
+                          activeSection === name ? 'h-0.5' : 'h-0'
+                        } transition-all duration-300`}
+                      ></span>
+                    </span>
+                  </a>
+                ))}
               </div>
-              <button 
-                onClick={() => setDarkMode(!darkMode)} 
+              <button
+                onClick={() => setDarkMode(!darkMode)}
                 className={`p-2 rounded-full ${skillBg} ${hoverBg} transition-colors`}
               >
                 {darkMode ? <Sun size={20} className={iconColor} /> : <Moon size={20} className={iconColor} />}
@@ -63,63 +193,83 @@ export default function HomePage() {
       </nav>
 
       {/* Hero Section */}
-      <section id="home" className="min-h-screen flex items-center justify-center px-4 sm:px-6 lg:px-8 pt-16">
-        <div className="max-w-4xl mx-auto text-center">
+      <section id="home" className="min-h-screen flex items-center justify-center px-4 sm:px-6 lg:px-8 pt-16 relative">
+        <div className="max-w-4xl mx-auto text-center relative z-10">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.2 }}
           >
-            <h1 className={`text-6xl md:text-7xl font-bold mb-6 bg-gradient-to-r ${gradientColors} text-transparent bg-clip-text`}>
+            <motion.h1
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.4 }}
+              className={`text-6xl md:text-7xl font-bold mb-6 bg-gradient-to-r ${gradientColors} text-transparent bg-clip-text`}
+            >
               Hi, I'm Kevin 👋
-            </h1>
-            <p className={`text-xl md:text-2xl ${secondaryTextColor} mb-8 max-w-2xl mx-auto`}>
+            </motion.h1>
+            <motion.p
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.6 }}
+              className={`text-xl md:text-2xl ${secondaryTextColor} mb-8 max-w-2xl mx-auto`}
+            >
               Full-Stack Developer & AI Enthusiast crafting digital experiences that make a difference.
-            </p>
-            <div className="flex flex-col sm:flex-row justify-center gap-4">
+            </motion.p>
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.8 }}
+              className="flex flex-col sm:flex-row justify-center gap-4"
+            >
               <motion.a
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 href="/kevin_final_resume.pdf"
-                className={`px-8 py-3 bg-gradient-to-r ${gradientColors} text-white rounded-lg shadow-lg hover:shadow-xl transition-all`}
+                className={`px-8 py-3 bg-gradient-to-r ${gradientColors} text-white rounded-lg shadow-lg hover:shadow-xl transition-all group relative overflow-hidden`}
               >
-                Download Resume
+                <span className="relative z-10">Download Resume</span>
+                <div className="absolute inset-0 bg-gradient-to-r from-cyan-600 via-blue-600 to-indigo-600 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
               </motion.a>
               <motion.a
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 href="#contact"
-                className={`px-8 py-3 border ${cardBorder} rounded-lg ${hoverBg} transition-all ${textColor}`}
+                className={`px-8 py-3 border ${cardBorder} rounded-lg ${hoverBg} transition-all ${textColor} group relative overflow-hidden`}
               >
-                Contact Me
+                <span className="relative z-10">Contact Me</span>
+                <div className="absolute inset-0 bg-gradient-to-r from-cyan-600 via-blue-600 to-indigo-600 opacity-0 group-hover:opacity-10 transition-opacity duration-300"></div>
               </motion.a>
-            </div>
+            </motion.div>
           </motion.div>
         </div>
       </section>
 
       {/* About Section */}
-      <section id="about" className="py-20 px-4 sm:px-6 lg:px-8">
+      <section id="about" className="py-20 px-4 sm:px-6 lg:px-8 relative">
         <div className="max-w-7xl mx-auto">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
             viewport={{ once: true }}
-            className={`${cardBg} backdrop-blur-lg rounded-2xl p-8 md:p-12 border ${cardBorder}`}
+            className={`${cardBg} backdrop-blur-lg rounded-2xl p-8 md:p-12 border ${cardBorder} relative overflow-hidden`}
           >
-            <h2 className={`text-4xl font-bold mb-8 bg-gradient-to-r ${gradientColors} text-transparent bg-clip-text`}>About Me</h2>
-            <div className="grid md:grid-cols-2 gap-12">
+            <div className="absolute inset-0 bg-gradient-to-r from-cyan-500/20 via-blue-500/20 to-indigo-500/20"></div>
+            <h2 className={`text-4xl font-bold mb-8 bg-gradient-to-r ${gradientColors} text-transparent bg-clip-text relative z-10`}>About Me</h2>
+            <div className="grid md:grid-cols-2 gap-12 relative z-10">
               <div>
-                <p className={`text-lg ${secondaryTextColor} mb-8`}>
-                  I'm a passionate Full-Stack Developer with a strong focus on creating intelligent and user-friendly applications. 
-                  With expertise in both mobile and web development, I specialize in building solutions that combine cutting-edge 
-                  technology with intuitive design.
+                <p className={`max-w-3xl mb-6 ${secondaryTextColor}`}>
+                  I'm Kevin Dave — a passionate full-stack developer and creative thinker with a strong focus on building meaningful, user-centered applications. With experience in <strong className={textColor}>Flutter</strong>, <strong className={textColor}>React</strong>, <strong className={textColor}>Python</strong>, and <strong className={textColor}>Supabase</strong>, I specialize in crafting intuitive, cross-platform experiences that solve real-world problems.
+                  <br /><br />
+                  I've led and contributed to impactful projects ranging from AI-powered civic monitoring systems to mental wellness apps and personalized news platforms. My foundation in <strong className={textColor}>graphic design</strong> and love for clean UI/UX helps me bridge the gap between form and function.
+                  <br /><br />
+                  Whether it's through clean code, collaborative teamwork, or thoughtful design, I strive to build software that's not just functional — but also delightful to use. I'm currently exploring AI integrations and scalable system design, and I'm always open to exciting opportunities and collaborations.
                 </p>
-                
+
                 <div className="space-y-6">
                   <div>
-                    <h3 className={`text-xl font-semibold mb-4 ${darkMode ? 'text-blue-400' : 'text-blue-600'}`}>Technical Skills</h3>
+                    <h3 className={`text-xl font-semibold mb-4 ${darkMode ? 'text-cyan-300' : 'text-cyan-700'}`}>Technical Skills</h3>
                     <div className="flex flex-wrap gap-3">
                       {['React', 'Flutter', 'TypeScript', 'Python', 'Django', 'Firebase', 'Supabase', 'Tailwind CSS'].map((skill, index) => (
                         <motion.span
@@ -127,16 +277,17 @@ export default function HomePage() {
                           initial={{ opacity: 0, y: 20 }}
                           animate={{ opacity: 1, y: 0 }}
                           transition={{ duration: 0.3, delay: index * 0.1 }}
-                          className={`px-4 py-2 ${skillBg} rounded-full text-sm backdrop-blur-sm ${skillText}`}
+                          className={`px-4 py-2 ${skillBg} rounded-full text-sm backdrop-blur-sm ${skillText} group relative overflow-hidden`}
                         >
-                          {skill}
+                          <span className="relative z-10">{skill}</span>
+                          <div className="absolute inset-0 bg-gradient-to-r from-cyan-600 via-blue-600 to-indigo-600 opacity-0 group-hover:opacity-10 transition-opacity duration-300"></div>
                         </motion.span>
                       ))}
                     </div>
                   </div>
 
                   <div>
-                    <h3 className={`text-xl font-semibold mb-4 ${darkMode ? 'text-blue-400' : 'text-blue-600'}`}>AI & ML Expertise</h3>
+                    <h3 className={`text-xl font-semibold mb-4 ${darkMode ? 'text-cyan-300' : 'text-cyan-700'}`}>AI & ML Expertise</h3>
                     <div className="flex flex-wrap gap-3">
                       {['TensorFlow', 'YOLOv11', 'TF-IDF', 'LSA', 'NLP', 'Computer Vision'].map((skill, index) => (
                         <motion.span
@@ -144,9 +295,10 @@ export default function HomePage() {
                           initial={{ opacity: 0, y: 20 }}
                           animate={{ opacity: 1, y: 0 }}
                           transition={{ duration: 0.3, delay: index * 0.1 + 0.8 }}
-                          className={`px-4 py-2 ${skillBg} rounded-full text-sm backdrop-blur-sm ${skillText}`}
+                          className={`px-4 py-2 ${skillBg} rounded-full text-sm backdrop-blur-sm ${skillText} group relative overflow-hidden`}
                         >
-                          {skill}
+                          <span className="relative z-10">{skill}</span>
+                          <div className="absolute inset-0 bg-gradient-to-r from-cyan-600 via-blue-600 to-indigo-600 opacity-0 group-hover:opacity-10 transition-opacity duration-300"></div>
                         </motion.span>
                       ))}
                     </div>
@@ -154,13 +306,56 @@ export default function HomePage() {
                 </div>
               </div>
               <div className="flex items-center justify-center">
-                <div className={`w-64 h-64 rounded-full bg-gradient-to-r ${gradientColors} p-1`}>
-                  <img 
-                    src="/kevin-photo.jpg" 
-                    alt="Kevin Dave" 
-                    className="w-full h-full rounded-full object-cover"
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.8 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ duration: 0.8 }}
+                  className="relative w-[300px] h-[300px]"
+                >
+                  {/* Background Shape */}
+                  <motion.div
+                    className={`absolute inset-0 rounded-full ${darkMode ? 'bg-white/5' : 'bg-black/5'} blur-xl`}
+                    initial={{ scale: 0.8, opacity: 0 }}
+                    animate={{ scale: 1, opacity: 1 }}
+                    transition={{ duration: 1, delay: 0.2 }}
                   />
-                </div>
+
+                  {/* Photo Container */}
+                  <motion.div
+                    whileHover={{ scale: 1.05, boxShadow: darkMode ? '0 0 30px rgba(255,255,255,0.2)' : '0 0 30px rgba(0,0,0,0.2)' }}
+                    className="relative w-full h-full rounded-full overflow-hidden border-4 border-transparent"
+                    style={{
+                      background: `conic-gradient(${darkMode ? '#22d3ee, #3b82f6, #22d3ee' : '#0891b2, #1e3a8a, #0891b2'})`
+                    }}
+                  >
+                    <img
+                      src="/kevin-photo.jpg"
+                      alt="Kevin Dave"
+                      className="w-full h-full object-cover"
+                    />
+                  </motion.div>
+
+                  {/* Particle Animations */}
+                  {[...Array(6)].map((_, index) => (
+                    <motion.div
+                      key={index}
+                      className={`absolute w-2 h-2 rounded-full ${darkMode ? 'bg-cyan-300' : 'bg-cyan-700'} opacity-50`}
+                      initial={{ opacity: 0, scale: 0 }}
+                      animate={{
+                        opacity: [0, 0.5, 0],
+                        scale: [0, 1, 0],
+                        x: Math.cos((index * Math.PI) / 3) * 100,
+                        y: Math.sin((index * Math.PI) / 3) * 100,
+                      }}
+                      transition={{
+                        duration: 3,
+                        repeat: Infinity,
+                        delay: index * 0.3,
+                        ease: 'easeInOut',
+                      }}
+                    />
+                  ))}
+                </motion.div>
               </div>
             </div>
           </motion.div>
@@ -168,7 +363,7 @@ export default function HomePage() {
       </section>
 
       {/* Projects Section */}
-      <section id="projects" className="py-20 px-4 sm:px-6 lg:px-8">
+      <section id="projects" className="py-20 px-4 sm:px-6 lg:px-8 relative">
         <div className="max-w-7xl mx-auto">
           <h2 className={`text-4xl font-bold mb-12 text-center bg-gradient-to-r ${gradientColors} text-transparent bg-clip-text`}>Projects</h2>
           <div className="grid md:grid-cols-3 gap-8">
@@ -198,26 +393,35 @@ export default function HomePage() {
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: idx * 0.2 }}
                 viewport={{ once: true }}
-                whileHover={{ y: -10 }}
-                className={`${cardBg} backdrop-blur-lg rounded-xl p-6 ${hoverBg} transition-all border ${cardBorder}`}
+                whileHover={{
+                  y: -10,
+                  scale: 1.02,
+                  boxShadow: darkMode
+                    ? "0 20px 25px -5px rgba(255, 255, 255, 0.1), 0 10px 10px -5px rgba(255, 255, 255, 0.04)"
+                    : "0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)"
+                }}
+                className={`${cardBg} backdrop-blur-lg rounded-xl p-6 ${hoverBg} transition-all border ${cardBorder} relative overflow-hidden group`}
               >
-                <h3 className={`text-2xl font-bold mb-4 ${textColor}`}>{project.title}</h3>
-                <p className={`${secondaryTextColor} mb-6`}>{project.desc}</p>
-                <div className="flex flex-wrap gap-2 mb-4">
+                <div className={`absolute inset-0 bg-gradient-to-r ${gradientColors} opacity-0 group-hover:opacity-10 transition-opacity duration-300`} />
+                <h3 className={`text-2xl font-bold mb-4 ${textColor} relative z-10`}>{project.title}</h3>
+                <p className={`${secondaryTextColor} mb-6 relative z-10`}>{project.desc}</p>
+                <div className="flex flex-wrap gap-2 mb-4 relative z-10">
                   {project.tech.map(tech => (
-                    <span key={tech} className={`px-3 py-1 ${skillBg} rounded-full text-sm ${skillText}`}>
+                    <span key={tech} className={`px-3 py-1 ${skillBg} rounded-full text-sm ${skillText} group-hover:bg-white/20 transition-colors`}>
                       {tech}
                     </span>
                   ))}
                 </div>
                 {project.link && (
-                  <a 
+                  <a
                     href={project.link}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className={`${darkMode ? 'text-blue-400 hover:text-blue-300' : 'text-blue-600 hover:text-blue-500'} transition-colors flex items-center gap-2`}
+                    className={`${darkMode ? 'text-cyan-300 hover:text-cyan-200' : 'text-cyan-700 hover:text-cyan-600'} transition-colors flex items-center gap-2 relative z-10 group/link`}
                   >
-                    <Github size={16} /> View Source Code
+                    <Github size={16} />
+                    <span>View Source Code</span>
+                    <ArrowRight size={16} className="transform group-hover/link:translate-x-1 transition-transform" />
                   </a>
                 )}
               </motion.div>
@@ -227,53 +431,42 @@ export default function HomePage() {
       </section>
 
       {/* Contact Section */}
-      <section id="contact" className="py-20 px-4 sm:px-6 lg:px-8">
+      <section id="contact" className="py-20 px-4 sm:px-6 lg:px-8 relative">
         <div className="max-w-4xl mx-auto text-center">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
             viewport={{ once: true }}
-            className={`${cardBg} backdrop-blur-lg rounded-2xl p-12 border ${cardBorder}`}
+            className={`${cardBg} backdrop-blur-lg rounded-2xl p-12 border ${cardBorder} relative overflow-hidden`}
           >
-            <h2 className={`text-4xl font-bold mb-6 bg-gradient-to-r ${gradientColors} text-transparent bg-clip-text`}>Get in Touch</h2>
-            <p className={`text-xl ${secondaryTextColor} mb-8`}>Let's build something amazing together.</p>
-            <div className="flex justify-center gap-8">
-              <motion.a
-                whileHover={{ scale: 1.1 }}
-                whileTap={{ scale: 0.9 }}
-                href="mailto:kevindave1308@gmail.com"
-                className={`p-4 rounded-full ${skillBg} ${hoverBg} transition-all`}
-                aria-label="Email"
-              >
-                <Mail size={24} className={iconColor} />
-              </motion.a>
-              <motion.a
-                whileHover={{ scale: 1.1 }}
-                whileTap={{ scale: 0.9 }}
-                href="https://github.com/Kevin2508"
-                target="_blank"
-                rel="noopener noreferrer"
-                className={`p-4 rounded-full ${skillBg} ${hoverBg} transition-all`}
-                aria-label="GitHub"
-              >
-                <Github size={24} className={iconColor} />
-              </motion.a>
-              <motion.a
-                whileHover={{ scale: 1.1 }}
-                whileTap={{ scale: 0.9 }}
-                href="https://linkedin.com/in/kevin-dave-18674a312"
-                target="_blank"
-                rel="noopener noreferrer"
-                className={`p-4 rounded-full ${skillBg} ${hoverBg} transition-all`}
-                aria-label="LinkedIn"
-              >
-                <Linkedin size={24} className={iconColor} />
-              </motion.a>
+            <div className="absolute inset-0 bg-gradient-to-r from-cyan-500/20 via-blue-500/20 to-indigo-500/20"></div>
+            <h2 className={`text-4xl font-bold mb-6 bg-gradient-to-r ${gradientColors} text-transparent bg-clip-text relative z-10`}>Get in Touch</h2>
+            <p className={`text-xl ${secondaryTextColor} mb-8 refe relative z-10`}>Let's build something amazing together.</p>
+            <div className="flex justify-center gap-8 relative z-10">
+              {[
+                { icon: Mail, href: "mailto:kevindave1308@gmail.com", label: "Email" },
+                { icon: Github, href: "https://github.com/Kevin2508", label: "GitHub" },
+                { icon: Linkedin, href: "https://linkedin.com/in/kevin-dave-18674a312", label: "LinkedIn" },
+              ].map((item, idx) => (
+                <motion.a
+                  key={idx}
+                  whileHover={{ scale: 1.1, y: -5 }}
+                  whileTap={{ scale: 0.9 }}
+                  href={item.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={`p-4 rounded-full ${skillBg} ${hoverBg} transition-all group relative overflow-hidden`}
+                  aria-label={item.label}
+                >
+                  <div className="absolute inset-0 bg-gradient-to-r from-cyan-600 via-blue-600 to-indigo-600 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                  <item.icon size={24} className={`${iconColor} relative z-10 group-hover:text-white transition-colors`} />
+                </motion.a>
+              ))}
             </div>
           </motion.div>
         </div>
       </section>
     </div>
   );
-} 
+}
