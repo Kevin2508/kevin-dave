@@ -1,4 +1,3 @@
-
 import { Mail, Github, Linkedin, Sun, Moon, Home as HomeIcon, User, FolderGit2, Phone, ArrowRight, Menu, X } from 'lucide-react';
 import { motion, useMotionValue, useSpring, useTransform, AnimatePresence } from 'framer-motion';
 import { useState, useEffect, useRef } from 'react';
@@ -251,7 +250,7 @@ export default function HomePage() {
               transition={{ duration: 0.8, delay: 0.6 }}
               className={`text-lg sm:text-xl md:text-2xl ${secondaryTextColor} mb-8 max-w-2xl mx-auto`}
             >
-              Full-Stack Developer & AI Enthusiast crafting digital experiences that make a difference.
+              Mobile & Web Developer specializing in Flutter and MERN Stack. Building responsive, real-world applications with a focus on clean code and exceptional user experiences.
             </motion.p>
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -262,7 +261,7 @@ export default function HomePage() {
               <motion.a
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                href="/kevin_final_resume.pdf"
+                href="/Kevin_Dave_Resume.pdf"
                 className={`px-6 py-3 bg-gradient-to-r ${gradientColors} text-white rounded-lg shadow-lg hover:shadow-xl transition-all group relative overflow-hidden text-base`}
               >
                 <span className="relative z-10">Download Resume</span>
@@ -296,19 +295,24 @@ export default function HomePage() {
             <h2 className={`text-3xl sm:text-4xl font-bold mb-6 bg-gradient-to-r ${gradientColors} text-transparent bg-clip-text relative z-10`}>About Me</h2>
             <div className="flex flex-col md:grid md:grid-cols-2 gap-8 relative z-10">
               <div>
-                <p className={`max-w-3xl mb-6 ${secondaryTextColor} text-base sm:text-lg`}>
-                  I'm Kevin Dave — a passionate full-stack developer and creative thinker with a strong focus on building meaningful, user-centered applications. With experience in <strong className={textColor}>Flutter</strong>, <strong className={textColor}>React</strong>, <strong className={textColor}>Python</strong>, and <strong className={textColor}>Supabase</strong>, I specialize in crafting intuitive, cross-platform experiences that solve real-world problems.
-                  <br /><br />
-                  I've led and contributed to impactful projects ranging from AI-powered civic monitoring systems to mental wellness apps and personalized news platforms. My foundation in <strong className={textColor}>graphic design</strong> and love for clean UI/UX helps me bridge the gap between form and function.
-                  <br /><br />
-                  Whether it's through clean code, collaborative teamwork, or thoughtful design, I strive to build software that's not just functional — but also delightful to use. I'm currently exploring AI integrations and scalable system design, and I'm always open to exciting opportunities and collaborations.
-                </p>
+              <p className={`max-w-3xl mb-6 ${secondaryTextColor} text-base sm:text-lg`}>
+  I'm Kevin Dave — a dedicated mobile and web developer with a strong focus on Flutter and the MERN stack. Currently pursuing my B.Tech in Computer Science at G.H. Patel College of Engineering and Technology, I maintain a CGPA of 8.82 and actively apply my academic learning to real-world development projects.
+  <br /><br />
+  During my internship as a Flutter Developer at GPHOOD TECH NIGAM PVT LTD, I worked on cross-platform mobile applications using Flutter and Firebase, gaining valuable experience in performance optimization and UI design. My development journey spans both frontend and backend technologies, where I focus on building responsive, scalable, and user-friendly applications.
+  <br /><br />
+  Outside of coding, I actively contribute to campus initiatives. As an Executive Member of CSI-GCET and Graphics Design Coordinator for the GCET Official Team, I’ve led event planning, managed design teams, and mentored juniors in UI/UX and visual communication. I'm deeply passionate about transforming ideas into impactful digital experiences through clean code, thoughtful design, and continuous learning.
+</p>
+
 
                 <div className="space-y-6">
                   <div>
                     <h3 className={`text-lg sm:text-xl font-semibold mb-4 ${darkMode ? 'text-cyan-300' : 'text-cyan-700'}`}>Technical Skills</h3>
                     <div className="flex flex-wrap gap-2 sm:gap-3">
-                      {['React', 'Flutter', 'TypeScript', 'Python', 'Django', 'Firebase', 'Supabase', 'Tailwind CSS'].map((skill, index) => (
+                      {[
+                        'Flutter', 'React', 'Node.js', 'Express', 'MongoDB',
+                        'Firebase', 'Supabase', 'JavaScript', 'TypeScript',
+                        'Dart', 'Python', 'Java', 'C++', 'HTML', 'CSS'
+                      ].map((skill, index) => (
                         <motion.span
                           key={skill}
                           initial={{ opacity: 0, y: 20 }}
@@ -324,9 +328,13 @@ export default function HomePage() {
                   </div>
 
                   <div>
-                    <h3 className={`text-lg sm:text-xl font-semibold mb-4 ${darkMode ? 'text-cyan-300' : 'text-cyan-700'}`}>AI & ML Expertise</h3>
+                    <h3 className={`text-lg sm:text-xl font-semibold mb-4 ${darkMode ? 'text-cyan-300' : 'text-cyan-700'}`}>Tools & Design</h3>
                     <div className="flex flex-wrap gap-2 sm:gap-3">
-                      {['TensorFlow', 'YOLOv11', 'TF-IDF', 'LSA', 'NLP', 'Computer Vision'].map((skill, index) => (
+                      {[
+                        'Git', 'Adobe Creative Suite', 'Figma',
+                        'VS Code', 'Android Studio', 'Postman',
+                        'MongoDB Compass', 'Firebase Console'
+                      ].map((skill, index) => (
                         <motion.span
                           key={skill}
                           initial={{ opacity: 0, y: 20 }}
@@ -402,22 +410,22 @@ export default function HomePage() {
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 sm:gap-8">
             {[
               {
-                title: "MindHaven",
-                desc: "Mental health app with mood tracking, journaling, and AI chatbot.",
-                tech: ["Flutter", "Supabase", "Python"],
-                link: "https://github.com/Kevin2508/MindHaven",
+                title: "My11s",
+                desc: "A cross-platform fantasy cricket mobile app built with Flutter, featuring real-time match data, player stats, and point calculations. Integrated Firebase authentication for secure user management.",
+                tech: ["Flutter", "Firebase", "Dart", "REST APIs"],
+                link: "https://github.com/Kevin2508/My11s",
               },
               {
-                title: "CityEye",
-                desc: "AI-based civic monitoring system using CCTV and real-time alerts.",
-                tech: ["React", "YOLOv11", "Django", "Supabase"],
-                link: "https://github.com/Kevin2508/Civic_Services_Monitoring",
+                title: "Mental Health Assessment App",
+                desc: "Top 50 Finalist in FootPrints'25 MSU x ODOO Hackathon. Features wellness scoring algorithm, NLP-based chatbot, and real-time forums with FCM notifications.",
+                tech: ["Flutter", "Supabase", "Node.js", "FastAPI", "NLP"],
+                link: "https://github.com/Kevin2508/Mental-Health-App",
               },
               {
-                title: "Newsly",
-                desc: "Personalized news app using TF-IDF and LSA for smart recommendations.",
-                tech: ["Flutter", "Python", "Supabase"],
-                link: "https://github.com/Kevin2508/NewsApp",
+                title: "StreamMart",
+                desc: "A MERN stack live shopping platform with real-time streaming, chat, and secure product management. Features role-based access for Admin, Seller, and Customer.",
+                tech: ["React", "Node.js", "Express", "MongoDB", "Socket.io"],
+                link: "https://github.com/Kevin2508/StreamMart",
               },
             ].map((project, idx) => (
               <motion.div
