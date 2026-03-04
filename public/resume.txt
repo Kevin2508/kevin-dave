@@ -1,0 +1,131 @@
+KEVIN DAVE
+Software Developer
+
++91-9624713824
+Rajkot, Gujarat
+kevindave1408@gmail.com
+
+Portfolio: Kevin-Dave.vercel.app
+GitHub: github.com/Kevin2508
+LinkedIn: linkedin.com/in/kevin-dave-18674a312
+
+Software Developer specializing in Flutter, Full Stack Web Development, and RESTful APIs. Experienced in building scalable, cloud-backed applications using Next.js, Node.js, Firebase, Supabase, and SQL/NoSQL databases. Strong foundation in Data Structures, OOP, DBMS, and Operating Systems, with proven experience in hackathon-driven development, performance optimization, and UI/UX design. 
+
+Kevin_Dave_Resume
+
+SKILLS
+
+Languages
+C / C++, Python, Core Java, Javascript, Dart, HTML, CSS
+
+Frameworks
+Flutter, NextJs
+
+Backend Services
+Firebase, Supabase, MongoDB, PostgreSQL, Prisma ORM
+
+Core Concepts
+Data Structures & Algorithms, OOP, DBMS, Operating Systems, SQL
+
+Tools & Design
+Git, GitHub, Figma, Adobe Creative Suite
+
+PROJECTS
+1. Real-Time Disaster Management System
+
+(Hackathon Winning Project at InnovAItion by Intuitive AI and DA-IICT)
+
+Tech Stack: Flutter, MERN Stack, DeepLabV3+ & ResNet-101, Redis, Docker and Kubernetes.
+
+Built a real-time disaster response platform with offline Wi-Fi SOS communication to enable victim–rescuer connectivity without cellular networks.
+
+Applied AI-based analysis on drone and satellite data to detect high-risk zones and prioritize rescue operations.
+
+Integrated IoT sensors (ESP32, MQ-135) for early detection of forest fires and gas leakage in critical areas.
+
+Developed a scalable MERN backend with caching and containerization to handle multiple SOS events and live dashboards.
+
+2. OneFlow – Project Management & Resource Planning Platform
+
+(Odoo X Amalthea IIT Gandhinagar Hackathon)
+
+Tech Stack: Next.js, PostgreSQL, Prisma ORM, REST APIs.
+
+Built a full-stack project management platform enabling task tracking, team collaboration, timesheets, and analytics dashboards.
+
+Implemented role-based access, task workflows, priority/status management, and real-time data handling for teams.
+
+Designed scalable backend APIs and optimized database schema for performance and multi-project resource planning.
+
+3. Quick Court – Sports Court Booking Platform
+
+(Finalist – Odoo Hackathon 2025)
+
+Tech Stack: Next.js, Flutter, PostgreSQL, Prisma ORM, REST APIs.
+
+Developed a full-stack web platform for booking sports courts (badminton, cricket, pickleball) with date and time scheduling.
+
+Implemented user authentication, court availability management, booking workflows, and relational database design.
+
+Built a companion Flutter mobile app providing seamless booking experience with consistent UI and backend integration.
+
+EDUCATION
+
+B.Tech – Computer Engineering
+G H Patel College of Engineering & Technology
+2022 – 2026
+CGPA – 8.82
+
+TECHNICAL EXPERIENCE
+
+Software Developer Intern – eSparkBiz Technologies Pvt Ltd
+Jan 2026 – Present
+
+Contributing to real-world web and mobile application development by implementing scalable features and optimizing application performance.
+
+Flutter Developer Intern – GPHOOD TECH NIGAM PVT LTD
+May 2025 – June 2025
+
+Engineered cross-platform Flutter features using Firebase Authentication and Firestore, improving performance and UI responsiveness.
+
+Collaborated with the team to design responsive UIs and enhance app performance.
+
+Executive Member – CSI-GCET
+Feb 2025 – Present
+
+Boosted workshop participation by 40% and managed technical events with 500+ attendees through strategic marketing.
+
+Here are all the hyperlinks from your resume converted to full clickable links:
+
+🌐 Portfolio
+
+https://Kevin-Dave.vercel.app
+
+💻 GitHub
+
+https://github.com/Kevin2508
+
+🔗 LinkedIn
+
+https://linkedin.com/in/kevin-dave-18674a312
+
+📧 Email
+
+mailto:kevindave1408@gmail.com
+
+📞 Phone
+
+tel:+919624713824
+
+These are the links that appear in the contact section of your resume and were likely embedded as hypertext fields in the PDF. 
+
+Kevin_Dave_Resume
+
+✅ Tip:
+When sharing your resume online (LinkedIn, ATS portals, recruiters), make sure they remain clickable hyperlinks like:
+
+Portfolio: https://kevin-dave.vercel.app
+
+GitHub: https://github.com/Kevin2508
+
+LinkedIn: https://linkedin.com/in/kevin-dave-18674a312

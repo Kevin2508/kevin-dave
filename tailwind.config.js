@@ -9,16 +9,25 @@ module.exports = {
     extend: {
       fontFamily: {
         sans: ['Inter', 'sans-serif'],
+        mono: ['JetBrains Mono', 'monospace'],
       },
       colors: {
-        blue: {
-          500: '#3b82f6',
-          600: '#2563eb',
+        dark: {
+          900: '#06060e',
+          800: '#0a0a1a',
+          700: '#10102a',
+          600: '#16163a',
         },
-        purple: {
-          400: '#a855f7',
-          500: '#9333ea',
+        accent: {
+          purple: '#8b5cf6',
+          blue: '#6366f1',
+          cyan: '#22d3ee',
+          pink: '#ec4899',
         },
+      },
+      animation: {
+        'spin-slow': 'spin 20s linear infinite',
+        'bounce-slow': 'bounce 3s infinite',
       },
     },
   },
